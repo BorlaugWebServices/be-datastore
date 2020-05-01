@@ -21,8 +21,12 @@
     "async-wait-until": "^1.2.4",
     "knex": "^0.21.0",
     "lodash": "^4.17.15",
+    "mssql": "^6.2.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
     "pg": "^8.0.2",
     "redis": "^3.0.2",
-    "redis-clustr": "^1.7.0"
+    "redis-clustr": "^1.7.0",
+    "sqlite3": "^4.2.0"
   }
 }
