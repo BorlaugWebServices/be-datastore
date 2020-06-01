@@ -8,11 +8,11 @@ const TTL                = 7776000;
 
 DataStore(DB_CONNECTION_TYPE, DB_CONNECTION_URL, REDIS_HOSTS, REDIS_PORTS, TTL)
 .then(async (store) => {
-    console.log("Attempting Migration");
+    debug("Attempting Migration");
     await store.migration.up();
-    console.log("Migration Success");
+    debug("Migration Success");
 
-    console.log("Attempting Block Save");
+    debug("Attempting Block Save");
     const input = {
         number: 103153,
         hash: '0x802208ee004b504cb2882c5f8b2476aa5a477e068e93cfc0a1cc816ddc40a6e0',
@@ -22,17 +22,17 @@ DataStore(DB_CONNECTION_TYPE, DB_CONNECTION_URL, REDIS_HOSTS, REDIS_PORTS, TTL)
         timestamp: '1587545540000'
     }
     await store.block.save(input);
-    console.log("Block Saved");
+    debug("Block Saved");
 
-    console.log("Attempting Block Get");
+    debug("Attempting Block Get");
     const output = await store.block.get(103153);
-    console.log("Block Found?", !!output);
+    debug("Block Found?", !!output);
 
-    console.log("Block Matched ?", input.hash === output.hash);
+    debug("Block Matched ?", input.hash === output.hash);
 
-    console.log("Attempting Rollback");
+    debug("Attempting Rollback");
     await store.migration.down();
-    console.log("Rollback Success");
+    debug("Rollback Success");
 
     process.exit();
 })
