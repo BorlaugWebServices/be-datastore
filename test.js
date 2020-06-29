@@ -1,9 +1,10 @@
+const debug     = require("debug")("be-datastore:Test");
 const DataStore = require('./lib/DataStore');
 
 const DB_CONNECTION_TYPE = 'pg';
-const DB_CONNECTION_URL  = 'postgres://postgres:mysecretpassword@localhost:5432/borlaug_test';
-const REDIS_HOSTS        = ['127.0.0.1'];
-const REDIS_PORTS        = ['7000'];
+const DB_CONNECTION_URL  = 'postgres://postgres:mysecretpassword@localhost:5432/borlaug';
+const REDIS_HOSTS        = ['127.0.0.1', '127.0.0.1', '127.0.0.1', '127.0.0.1', '127.0.0.1', '127.0.0.1'];
+const REDIS_PORTS        = [7000, 7001, 7002, 7003, 7004, 7005];
 const TTL                = 7776000;
 
 DataStore(DB_CONNECTION_TYPE, DB_CONNECTION_URL, REDIS_HOSTS, REDIS_PORTS, TTL)
