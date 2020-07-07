@@ -2,12 +2,13 @@ const debug     = require("debug")("be-datastore:Test");
 const DataStore = require('./lib/DataStore');
 
 const DB_CONNECTION_TYPE = 'pg';
-const DB_CONNECTION_URL  = 'postgres://postgres:mysecretpassword@localhost:5432/borlaug';
-const REDIS_HOSTS        = ['127.0.0.1', '127.0.0.1', '127.0.0.1', '127.0.0.1', '127.0.0.1', '127.0.0.1'];
-const REDIS_PORTS        = [7000, 7001, 7002, 7003, 7004, 7005];
-const TTL                = 7776000;
+const DB_CONNECTION_URL  = 'postgres://postgres:mysecretpassword@localhost:5432/borlaug_test';
+const REDIS_HOST         = '127.0.0.1';
+const REDIS_PORT         = 6379;
+const ttlMin             = 3600;
+const ttlMax             = 31556952;
 
-DataStore(DB_CONNECTION_TYPE, DB_CONNECTION_URL, REDIS_HOSTS, REDIS_PORTS, TTL)
+DataStore(DB_CONNECTION_TYPE, DB_CONNECTION_URL, REDIS_HOST, REDIS_PORT, ttlMin, ttlMax)
 .then(async (store) => {
     debug("Attempting Migration");
     await store.migration.up();
@@ -30,6 +31,7 @@ DataStore(DB_CONNECTION_TYPE, DB_CONNECTION_URL, REDIS_HOSTS, REDIS_PORTS, TTL)
     debug("Block Found?", !!output);
 
     debug("Block Matched ?", input.hash === output.hash);
+    await store.cache.del(`block:${103153}`);
 
     debug("Attempting Rollback");
     await store.migration.down();
