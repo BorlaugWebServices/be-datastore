@@ -1,1 +1,0 @@
-module.exports.DataStore = require('./lib/DataStore');
