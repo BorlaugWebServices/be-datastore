@@ -1,8 +1,8 @@
 import Debug from 'debug';
-import { FullInherent, StoreContext } from './types';
-import { getCached, getListCached, saveCached } from './utils';
-import { ID_PATTERN } from './constants';
-import { BlockRow } from './dbTypes';
+import {FullInherent, StoreContext} from './types';
+import {getCached, getListCached, saveCached} from './utils';
+import {ID_PATTERN} from './constants';
+import {InherentRow} from './dbTypes';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = Debug('be-datastore:Inherent');
@@ -33,7 +33,7 @@ export default class Inherent {
 
   async save(inherent: FullInherent) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { events, ...dbInherent } = inherent;
+    const {events, ...dbInherent} = inherent;
     await saveCached(inherent, this.ctx, {
       tableName: 'inherent',
       idField: 'id',
@@ -59,7 +59,7 @@ export default class Inherent {
    * Retrieves n inherents from Cache, if n inherents are not found in Cache then retrieves from Database; n is length of inherentids
    */
   async getList(eventids: string[]) {
-    return getListCached<BlockRow>(eventids, {
+    return getListCached<InherentRow>(eventids, {
       ctx: this.ctx,
       keyOf: Inherent.keyOf,
       getOne: (id) => this.get(id),

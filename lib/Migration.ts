@@ -1,4 +1,4 @@
-import { Knex } from 'knex';
+import {Knex} from 'knex';
 import Debug from 'debug';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -125,7 +125,7 @@ export default class Migration {
         table.index(['lease_id'], 'lease_activity_lease_id_index');
       }),
       this.db.schema.createTable('audit', (table) => {
-        table.integer('id').primary();
+        table.string('id').primary();
         table.string('audit_creator').notNullable();
         table.string('auditor').notNullable();
         table.integer('blockNumber').notNullable().unsigned();
@@ -134,7 +134,7 @@ export default class Migration {
         table.bigInteger('timestamp').unsigned();
       }),
       this.db.schema.createTable('audit_activity', (table) => {
-        table.integer('audit_id').notNullable();
+        table.string('audit_id').notNullable();
         table.string('tx_hash');
         table.unique(['audit_id', 'tx_hash']);
         table.index(['audit_id'], 'audit_activity_audit_id_index');
@@ -171,7 +171,7 @@ export default class Migration {
         table.index(['definition_id'], 'definition_activity_definition_id_index');
       }),
       this.db.schema.createTable('sequence', (table) => {
-        table.integer('id').primary();
+        table.string('id').primary();
         table.string('name');
         table.integer('registry').notNullable();
         table.integer('template').notNullable();
@@ -183,13 +183,13 @@ export default class Migration {
         table.string('sequence_creator_group');
       }),
       this.db.schema.createTable('sequence_activity', (table) => {
-        table.integer('sequence_id').notNullable();
+        table.string('sequence_id').notNullable();
         table.string('tx_hash');
         table.unique(['sequence_id', 'tx_hash']);
         table.index(['sequence_id'], 'sequence_activity_sequence_id_index');
       }),
       this.db.schema.createTable('proposal', (table) => {
-        table.integer('id').primary();
+        table.string('id').primary();
         table.string('proposer').notNullable();
         table.string('group_id').notNullable();
         table.integer('blockNumber').notNullable().unsigned();
@@ -198,13 +198,13 @@ export default class Migration {
         table.bigInteger('timestamp').unsigned();
       }),
       this.db.schema.createTable('proposal_activity', (table) => {
-        table.integer('proposal_id').notNullable();
+        table.string('proposal_id').notNullable();
         table.string('tx_hash');
         table.unique(['proposal_id', 'tx_hash']);
         table.index(['proposal_id'], 'proposal_activity_proposal_id_index');
       }),
       this.db.schema.createTable('group', (table) => {
-        table.integer('id').primary();
+        table.string('id').primary();
         table.string('group_creator').notNullable();
         table.integer('blockNumber').notNullable().unsigned();
         table.string('blockHash').notNullable();
@@ -212,13 +212,13 @@ export default class Migration {
         table.bigInteger('timestamp').unsigned();
       }),
       this.db.schema.createTable('group_activity', (table) => {
-        table.integer('group_id').notNullable();
+        table.string('group_id').notNullable();
         table.string('tx_hash');
         table.unique(['group_id', 'tx_hash']);
         table.index(['group_id'], 'group_activity_group_id_index');
       }),
       this.db.schema.createTable('catalog', (table) => {
-        table.integer('id').primary();
+        table.string('id').primary();
         table.string('caller').notNullable();
         table.string('controller').notNullable();
         table.integer('blockNumber').notNullable().unsigned();
@@ -227,7 +227,7 @@ export default class Migration {
         table.bigInteger('timestamp').unsigned();
       }),
       this.db.schema.createTable('catalog_activity', (table) => {
-        table.integer('catalog_id').notNullable();
+        table.string('catalog_id').notNullable();
         table.string('tx_hash');
         table.unique(['catalog_id', 'tx_hash']);
         table.index(['catalog_id'], 'catalog_activity_catalog_id_index');

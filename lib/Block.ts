@@ -1,8 +1,8 @@
 import Debug from 'debug';
-import { getListCached, saveCached } from './utils';
-import { FullBlock, StoreContext } from './types';
-import { BlockRow } from './dbTypes';
-import { HASH_PATTERN, NUMBER_PATTERN } from './constants';
+import {getListCached, saveCached} from './utils';
+import {FullBlock, StoreContext} from './types';
+import {BlockRow} from './dbTypes';
+import {HASH_PATTERN, NUMBER_PATTERN} from './constants';
 
 const debug = Debug('be-datastore:Block');
 
@@ -80,19 +80,19 @@ export default class Block {
         return null;
       }
 
-      let block: FullBlock;
+      let block: FullBlock | null;
       const cachedBlock = await this.ctx.redis.get(Block.keyOf(numberOrHash));
       if (cachedBlock) {
         block = JSON.parse(cachedBlock);
       } else {
-        const query = this.ctx.db('block');
+        const query = this.ctx.db<FullBlock>('block');
         if (number !== null) {
           query.where('number', number);
         } else {
           query.where('hash', hash);
         }
         const blocks = await query;
-        block = blocks && blocks.length > 0 ? blocks[0] : null;
+        block = (blocks && blocks.length > 0 ? blocks[0] : null) as FullBlock | null;
 
         if (block) {
           const [transactions, inherents, events, logs] = await Promise.all([

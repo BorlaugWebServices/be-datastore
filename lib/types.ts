@@ -1,5 +1,5 @@
-import { Knex } from 'knex';
-import { BlockRow, InherentRow, TransactionRow } from './dbTypes';
+import {Knex} from 'knex';
+import {BlockRow, InherentRow, TransactionRow} from './dbTypes';
 
 export type RedisGet = (key: string) => Promise<string | null>;
 export type RedisMGet = (keys: string[]) => Promise<(string | null)[]>;
@@ -20,15 +20,15 @@ export interface StoreContext {
 }
 
 export interface FullBlock extends BlockRow {
-  transactions: string[];
-  inherents: string[];
-  events: string[];
-  logs: string[];
+  transactions?: string[];
+  inherents?: string[];
+  events?: string[];
+  logs?: string[];
 
 }
 
 export interface FullInherent extends InherentRow {
-  events: string[];
+  events?: string[];
 }
 
 export interface FullTransaction extends TransactionRow {

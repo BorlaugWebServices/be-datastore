@@ -1,7 +1,7 @@
-import knex, { Knex } from 'knex';
-import { createClient } from 'redis';
-import { waitUntil } from 'async-wait-until';
-import { promisify } from 'util';
+import knex, {Knex} from 'knex';
+import {createClient} from 'redis';
+import {waitUntil} from 'async-wait-until';
+import {promisify} from 'util';
 import Debug from 'debug';
 
 import Migration from './Migration';
@@ -16,8 +16,8 @@ import Audit from './Audit';
 import Provenance from './Provenance';
 import Proposal from './Proposal';
 import Group from './Group';
-import { StoreContext } from './types';
-import { wrapRedis } from './utils';
+import {StoreContext} from './types';
+import {wrapRedis} from './utils';
 
 const debug = Debug('be-datastore:DataStore');
 
@@ -53,10 +53,11 @@ export default class DataStore {
   private cacheStatus = 'UNKNOWN';
 
   cleanup: () => Promise<number>;
+  clearCache: () => Promise<void>;
 
   constructor(databaseType: string, databaseUrl: string, redisHost: string, redisPort: number, ttlMin: number, ttlMax: number) {
     // initialize pg connection
-    this.db = knex({ client: databaseType, connection: databaseUrl, debug: false });
+    this.db = knex({client: databaseType, connection: databaseUrl, debug: false});
 
     // Initialize redis cluster connection
     this.cache = createClient({
@@ -114,7 +115,7 @@ export default class DataStore {
 
     this.cleanup = async () => {
       const keys = isV4plus ? await this.cache.keys('*') : await promisify(this.cache.keys).bind(this.cache)('*');
-      const { length } = keys;
+      const {length} = keys;
       debug('Found %d keys', length);
 
       if (isV4plus) {
@@ -144,6 +145,17 @@ export default class DataStore {
 
       return length;
     };
+
+    this.clearCache = async () => {
+      if (isV4plus) {
+        await this.cache.flushDb();
+        debug('Flushed DB');
+      } else {
+        await this.cache.flushdb((err: any, succeeded: any) => {
+          debug(succeeded); // will be true if successfull
+        });
+      }
+    }
   }
 
   async connect() {

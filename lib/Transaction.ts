@@ -1,8 +1,8 @@
 import Debug from 'debug';
-import { FullTransaction, StoreContext } from './types';
-import { getCached, getListCached, saveCached } from './utils';
-import { HASH_PATTERN, PUBLIC_KEY_PATTERN } from './constants';
-import { EventRow, TransactionRow } from './dbTypes';
+import {FullTransaction, StoreContext} from './types';
+import {getCached, getListCached, saveCached} from './utils';
+import {HASH_PATTERN, PUBLIC_KEY_PATTERN} from './constants';
+import {TransactionRow} from './dbTypes';
 
 const debug = Debug('be-datastore:Transaction');
 
@@ -54,7 +54,7 @@ export default class Transaction {
    */
   async save(transaction: FullTransaction) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { events, ...dbTransaction } = transaction;
+    const {events, ...dbTransaction} = transaction;
     let latestTxBlock = await this.latestTxBlockNumber();
     latestTxBlock = latestTxBlock ? Number(latestTxBlock) : 0;
     await saveCached(transaction, this.ctx, {
@@ -79,16 +79,7 @@ export default class Transaction {
     return getCached(hash, this.ctx, {
       isValid: (id) => HASH_PATTERN.test(id),
       keyOf: Transaction.keyOf,
-      fetchOne: async (id) => {
-        const resultSet = await this.ctx.db('transaction').where('hash', id);
-        const transactionDb: TransactionRow = resultSet && resultSet.length > 0 ? resultSet[0] : null;
-        const transaction: FullTransaction = { ...transactionDb };
-        if (transactionDb) {
-          const events: EventRow[] = await this.ctx.db('event').select('id').where('extrinsicid', id);
-          transaction.events = events.map((event) => event.id);
-        }
-        return transaction;
-      },
+      fetchOne: async (id) => Transaction.fetchOne(this.ctx, id),
       ttlSeconds: this.ctx.ttlMax,
     });
   }
@@ -120,7 +111,7 @@ export default class Transaction {
       .offset(offset)
       .limit(limit);
 
-    return { total, slice };
+    return {total, slice};
   }
 
   /**
@@ -144,7 +135,7 @@ export default class Transaction {
       .offset(offset)
       .limit(limit);
 
-    return { total, slice };
+    return {total, slice};
   }
 
   /**
@@ -170,7 +161,7 @@ export default class Transaction {
       .offset(offset)
       .limit(limit);
 
-    return { total, slice };
+    return {total, slice};
   }
 
   /**

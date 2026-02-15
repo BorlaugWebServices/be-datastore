@@ -1,10 +1,8 @@
 import Debug from 'debug';
-import {
-  getActivities, getCached, saveActivity, saveCached,
-} from './utils';
-import { StoreContext } from './types';
-import { GroupActivityRow, GroupRow } from './dbTypes';
-import { NUMBER_PATTERN } from './constants';
+import {getActivities, getCached, saveActivity, saveCached,} from './utils';
+import {StoreContext} from './types';
+import {GroupActivityRow, GroupRow} from './dbTypes';
+import {NUMBER_PATTERN} from './constants';
 
 const debug = Debug('be-datastore:Group');
 
@@ -23,7 +21,6 @@ export default class Group {
    * Saves group in Database and Cache with expiry
    */
   async save(group: GroupRow) {
-    debug(group);
     await saveCached<GroupRow>(group, this.ctx, {
       tableName: 'group',
       idField: 'id',
@@ -35,7 +32,7 @@ export default class Group {
   /**
    * Saves activities (transactions) associated with an group
    */
-  async saveActivity(activity: any) {
+  async saveActivity(activity: GroupActivityRow) {
     await saveActivity(activity, this.ctx, {
       tableName: 'group_activity',
       parentIdField: 'group_id',

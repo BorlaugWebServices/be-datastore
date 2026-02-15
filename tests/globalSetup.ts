@@ -6,8 +6,8 @@ export default async () => {
   const envPath = path.resolve(__dirname, '../.env');
   dotenv.config({path: envPath});
   const store = new DataStore(
-    process.env.TEST_DATABASE_URL!,
     'pg',
+    process.env.TEST_DATABASE_URL!,
     process.env.REDIS_HOST!,
     Number(process.env.REDIS_PORT),
     Number(process.env.TTL_MIN),
