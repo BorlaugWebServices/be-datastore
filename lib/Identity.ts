@@ -1,12 +1,8 @@
 import Debug from 'debug';
-import { StoreContext } from './types';
-import { CatalogActivityRow, CatalogRow, IdentityRow } from './dbTypes';
-import {
-  getActivities, getCached, saveActivity, saveCached,
-} from './utils';
-import {
-  DID_PATTERN, HASH_PATTERN, HASH_PATTERN_2, NUMBER_PATTERN,
-} from './constants';
+import {StoreContext} from './types';
+import {CatalogActivityRow, CatalogRow, IdentityRow} from './dbTypes';
+import {getActivities, getCached, saveActivity, saveCached,} from './utils';
+import {DID_PATTERN, HASH_PATTERN, HASH_PATTERN_2, NUMBER_PATTERN,} from './constants';
 
 const debug = Debug('be-datastore:Identity');
 
@@ -56,7 +52,7 @@ export default class Identity {
     await saveActivity<CatalogActivityRow>(activity, this.ctx, {
       tableName: 'catalog_activity',
       parentIdField: 'catalog_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -82,7 +78,7 @@ export default class Identity {
     await saveActivity(activity, this.ctx, {
       tableName: 'identity_activity',
       parentIdField: 'did',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -119,7 +115,7 @@ export default class Identity {
     return getActivities<CatalogActivityRow>(id, this.ctx, {
       tableName: 'catalog_activity',
       parentIdField: 'catalog_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -130,7 +126,7 @@ export default class Identity {
     return getActivities(did, this.ctx, {
       tableName: 'identity_activity',
       parentIdField: 'did',
-      txHashField: 'tx_hash',
+
     });
   }
 

@@ -1,10 +1,8 @@
 import Debug from 'debug';
-import { StoreContext } from './types';
-import {
-  getActivities, getCached, saveActivity, saveCached,
-} from './utils';
-import { NUMBER_PATTERN } from './constants';
-import { ProposalActivityRow, ProposalRow } from './dbTypes';
+import {StoreContext} from './types';
+import {getActivities, getCached, saveActivity, saveCached,} from './utils';
+import {NUMBER_PATTERN} from './constants';
+import {ProposalActivityRow, ProposalRow} from './dbTypes';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = Debug('be-datastore:Proposal');
@@ -39,7 +37,7 @@ export default class Proposal {
     await saveActivity(activity, this.ctx, {
       tableName: 'proposal_activity',
       parentIdField: 'proposal_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -65,7 +63,7 @@ export default class Proposal {
     return getActivities(proposalid, this.ctx, {
       tableName: 'proposal_activity',
       parentIdField: 'proposal_id',
-      txHashField: 'tx_hash',
+
     });
   }
 

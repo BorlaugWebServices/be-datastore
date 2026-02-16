@@ -1,6 +1,7 @@
-import { promisify } from 'util';
+import {promisify} from 'util';
 import Debug from 'debug';
-import { StoreContext } from './types';
+import {StoreContext} from './types';
+import {ActivityRow} from "./dbTypes";
 
 const debug = Debug('be-datastore:Block');
 
@@ -158,15 +159,13 @@ export async function saveActivity<T extends Record<string, any>>(
   options: {
     tableName: string;
     parentIdField: keyof T;
-    txHashField: keyof T;
   },
 ) {
   const parentId = activity[options.parentIdField];
-  const txHash = activity[options.txHashField];
 
   const activities = await ctx.db(options.tableName)
     .where(options.parentIdField as string, parentId)
-    .andWhere(options.txHashField as string, txHash);
+    .andWhere('tx_hash' as string, activity.tx_hash);
 
   if (activities && activities.length === 0) {
     await ctx.db(options.tableName).insert(activity);
@@ -177,20 +176,20 @@ export async function saveActivity<T extends Record<string, any>>(
  * Generic "getActivities" helper:
  * - Retrieves associated activities (transactions) from DB
  */
-export async function getActivities<T>(
+
+export async function getActivities<T extends ActivityRow<string, string>>(
   parentId: string,
   ctx: StoreContext,
   options: {
     tableName: string;
     parentIdField: string;
-    txHashField: keyof T;
   },
 ): Promise<string[]> {
   const activities: T[] = await ctx.db(options.tableName)
     .where(options.parentIdField, parentId)
-    .select(options.txHashField as string) as unknown as T[];
+    .select('tx_hash') as unknown as T[];
 
-  return activities.map((activity) => activity[options.txHashField] as unknown as string);
+  return activities.map((activity) => activity.tx_hash as unknown as string);
 }
 
 /**

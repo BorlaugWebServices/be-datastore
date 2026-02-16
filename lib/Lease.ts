@@ -54,7 +54,7 @@ export default class Lease {
     await saveActivity<AssetRegistryActivityRow>(activity, this.ctx, {
       tableName: 'asset_registry_activity',
       parentIdField: 'registry_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -80,7 +80,7 @@ export default class Lease {
     return getActivities<RegistryActivityRow>(registryid, this.ctx, {
       tableName: 'asset_registry_activity',
       parentIdField: 'registry_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -103,7 +103,7 @@ export default class Lease {
     await saveActivity(activity, this.ctx, {
       tableName: 'asset_activity',
       parentIdField: 'asset_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -129,7 +129,7 @@ export default class Lease {
     return getActivities(assetid, this.ctx, {
       tableName: 'asset_activity',
       parentIdField: 'asset_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -152,7 +152,7 @@ export default class Lease {
     await saveActivity(activity, this.ctx, {
       tableName: 'lease_activity',
       parentIdField: 'lease_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -178,7 +178,7 @@ export default class Lease {
     return getActivities(leaseid, this.ctx, {
       tableName: 'lease_activity',
       parentIdField: 'lease_id',
-      txHashField: 'tx_hash',
+
     });
   }
 

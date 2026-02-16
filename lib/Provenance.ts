@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import { StoreContext } from './types';
+import {StoreContext} from './types';
 import {
   DefinitionActivityRow,
   DefinitionRow,
@@ -8,10 +8,8 @@ import {
   SequenceActivityRow,
   SequenceRow,
 } from './dbTypes';
-import {
-  getActivities, getCached, saveActivity, saveCached,
-} from './utils';
-import { NUMBER_PATTERN } from './constants';
+import {getActivities, getCached, saveActivity, saveCached,} from './utils';
+import {NUMBER_PATTERN} from './constants';
 
 const debug = Debug('be-datastore:Provenance');
 
@@ -53,7 +51,7 @@ export default class Provenance {
     await saveActivity(activity, this.ctx, {
       tableName: 'registry_activity',
       parentIdField: 'registry_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -79,7 +77,7 @@ export default class Provenance {
     return getActivities(registryid, this.ctx, {
       tableName: 'registry_activity',
       parentIdField: 'registry_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -102,7 +100,7 @@ export default class Provenance {
     await saveActivity(activity, this.ctx, {
       tableName: 'definition_activity',
       parentIdField: 'definition_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -128,7 +126,7 @@ export default class Provenance {
     return getActivities(definitionid, this.ctx, {
       tableName: 'definition_activity',
       parentIdField: 'definition_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -152,7 +150,7 @@ export default class Provenance {
     await saveActivity(activity, this.ctx, {
       tableName: 'sequence_activity',
       parentIdField: 'sequence_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -178,7 +176,7 @@ export default class Provenance {
     return getActivities(sequenceid, this.ctx, {
       tableName: 'sequence_activity',
       parentIdField: 'sequence_id',
-      txHashField: 'tx_hash',
+
     });
   }
 

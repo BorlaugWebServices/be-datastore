@@ -36,7 +36,7 @@ export default class Group {
     await saveActivity(activity, this.ctx, {
       tableName: 'group_activity',
       parentIdField: 'group_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -63,7 +63,7 @@ export default class Group {
     return getActivities<GroupActivityRow>(groupid, this.ctx, {
       tableName: 'group_activity',
       parentIdField: 'group_id',
-      txHashField: 'tx_hash',
+
     });
   }
 

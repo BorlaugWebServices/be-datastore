@@ -16,9 +16,10 @@ export type JsonValue =
  */
 export type DbBigInt = number;
 
+
 /** Helper for the *_activity tables (join rows). */
 export type ActivityRow<IdKey extends string, IdType> = Record<IdKey, IdType> & {
-  tx_hash: string | null;
+  tx_hash: string;
 };
 
 /** block */

@@ -1,10 +1,8 @@
 import Debug from 'debug';
-import { StoreContext } from './types';
-import { AuditActivityRow, AuditRow } from './dbTypes';
-import { NUMBER_PATTERN } from './constants';
-import {
-  getActivities, getCached, saveActivity, saveCached,
-} from './utils';
+import {StoreContext} from './types';
+import {AuditActivityRow, AuditRow} from './dbTypes';
+import {NUMBER_PATTERN} from './constants';
+import {getActivities, getCached, saveActivity, saveCached,} from './utils';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = Debug('be-datastore:Audit');
@@ -39,7 +37,7 @@ export default class Audit {
     await saveActivity<AuditActivityRow>(activity, this.ctx, {
       tableName: 'audit_activity',
       parentIdField: 'audit_id',
-      txHashField: 'tx_hash',
+
     });
   }
 
@@ -64,8 +62,7 @@ export default class Audit {
   async getActivities(auditid: string) {
     return getActivities<AuditActivityRow>(auditid, this.ctx, {
       tableName: 'audit_activity',
-      parentIdField: 'audit_id',
-      txHashField: 'tx_hash',
+      parentIdField: 'audit_id'
     });
   }
 
