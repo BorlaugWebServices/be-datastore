@@ -1,12 +1,17 @@
 import Debug from 'debug';
-import { StoreContext } from './types';
+import {StoreContext} from './types';
 import {
-  AssetActivityRow, AssetRow, LeaseActivityRow, LeaseRow, RegistryActivityRow, RegistryRow,
+  AssetActivityRow,
+  AssetRegistryActivityRow,
+  AssetRegistryRow,
+  AssetRow,
+  LeaseActivityRow,
+  LeaseRow,
+  RegistryActivityRow,
+  RegistryRow,
 } from './dbTypes';
-import {
-  getActivities, getCached, saveActivity, saveCached,
-} from './utils';
-import { NUMBER_PATTERN } from './constants';
+import {getActivities, getCached, saveActivity, saveCached,} from './utils';
+import {NUMBER_PATTERN} from './constants';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = Debug('be-datastore:Lease');
@@ -33,8 +38,8 @@ export default class Lease {
   /**
    * Saves asset registry in Database and Cache
    */
-  async saveRegistry(registry: RegistryRow) {
-    await saveCached<RegistryRow>(registry, this.ctx, {
+  async saveRegistry(registry: AssetRegistryRow) {
+    await saveCached<AssetRegistryRow>(registry, this.ctx, {
       tableName: 'asset_registry',
       idField: 'id',
       keyOf: Lease.keyOfRegistry,
@@ -45,8 +50,8 @@ export default class Lease {
   /**
    * Saves activities (transactions) associated with a asset registry
    */
-  async saveRegistryActivity(activity: RegistryActivityRow) {
-    await saveActivity<RegistryActivityRow>(activity, this.ctx, {
+  async saveRegistryActivity(activity: AssetRegistryActivityRow) {
+    await saveActivity<AssetRegistryActivityRow>(activity, this.ctx, {
       tableName: 'asset_registry_activity',
       parentIdField: 'registry_id',
       txHashField: 'tx_hash',
