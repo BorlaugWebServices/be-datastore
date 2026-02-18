@@ -87,7 +87,7 @@ export default class DataStore {
       });
     }
 
-    const storeContext: StoreContext = {
+    const storeContext = {
       db: this.db,
       ttlMin,
       ttlMax,
@@ -98,7 +98,8 @@ export default class DataStore {
         mget: wrapRedis(this.cache, isV4plus ? 'mGet' : 'mget', isV4plus),
         publish: wrapRedis(this.cache, 'publish', isV4plus),
       },
-    };
+    } as StoreContext;
+
 
     this.migration = new Migration(storeContext.db); // Migrations usually only need DB
     this.block = new Block(storeContext);
@@ -112,6 +113,7 @@ export default class DataStore {
     this.provenance = new Provenance(storeContext);
     this.proposal = new Proposal(storeContext);
     this.group = new Group(storeContext);
+
 
     this.cleanup = async () => {
       const keys = isV4plus ? await this.cache.keys('*') : await promisify(this.cache.keys).bind(this.cache)('*');

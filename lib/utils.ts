@@ -35,7 +35,7 @@ export async function getListCached<T>(
     keyOf: (id: string) => string;
     getOne: (id: string) => Promise<T | null>;
   },
-): Promise<T[]> {
+): Promise<(T | null)[]> {
   if (ids.length === 0) return [];
 
   const keys = ids.map(options.keyOf);

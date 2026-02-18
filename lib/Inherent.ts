@@ -18,7 +18,7 @@ export default class Inherent {
     return `inh:${id}`;
   }
 
-  static async fetchOne(ctx: StoreContext, id: string) {
+  static async fetchOne(ctx: StoreContext, id: string): Promise<FullInherent> {
     const resultSet = await ctx.db('inherent').where('id', id);
     const inherent = resultSet && resultSet.length > 0 ? resultSet[0] : null;
     if (inherent) {
@@ -46,7 +46,7 @@ export default class Inherent {
   /**
    * Retrieves inherent from Cache, if not found in Cache retrieves from Database
    */
-  async get(inherentid: string) {
+  async get(inherentid: string): Promise<FullInherent | null> {
     return getCached(inherentid, this.ctx, {
       isValid: (id) => ID_PATTERN.test(id),
       keyOf: Inherent.keyOf,

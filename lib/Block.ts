@@ -1,7 +1,7 @@
 import Debug from 'debug';
 import {getListCached, saveCached} from './utils';
-import {FullBlock, StoreContext} from './types';
-import {BlockRow} from './dbTypes';
+import {BlockExpanded, FullBlock, FullInherent, StoreContext} from './types';
+import {EventRow, LogRow, TransactionRow} from './dbTypes';
 import {HASH_PATTERN, NUMBER_PATTERN} from './constants';
 
 const debug = Debug('be-datastore:Block');
@@ -101,7 +101,6 @@ export default class Block {
             this.ctx.db('event').select(this.ctx.db.raw('array_agg(id) as events')).where('blockNumber', block.number),
             this.ctx.db('log').select(this.ctx.db.raw('array_agg(id) as logs')).where('blockNumber', block.number),
           ]);
-
           block.transactions = transactions[0].transactions ? transactions[0].transactions : [];
           block.inherents = inherents[0].inherents ? inherents[0].inherents : [];
           block.events = events[0].events ? events[0].events : [];
@@ -121,7 +120,24 @@ export default class Block {
           );
         }
       }
-      return block;
+      if (block) {
+        const [txs, inh, evs, lgs] = await Promise.all([
+          Promise.all((block.transactions || []).map(h => this.ctx.transaction.get(h))),
+          Promise.all((block.inherents || []).map(id => this.ctx.inherent.get(id))),
+          Promise.all((block.events || []).map(id => this.ctx.event.get(id))),
+          Promise.all((block.logs || []).map(id => this.ctx.log.get(id))),
+        ]);
+        const blockExpanded: BlockExpanded = {
+          ...block,
+          transactions: txs.filter((item): item is TransactionRow => item !== null),
+          inherents: inh.filter((item): item is FullInherent => item !== null),
+          events: evs.filter((item): item is EventRow => item !== null),
+          logs: lgs.filter((item): item is LogRow => item !== null),
+        };
+
+        return blockExpanded;
+      }
+      return null
     } catch (e) {
       debug('Get block error : %o ;', e);
       return null;
@@ -132,7 +148,7 @@ export default class Block {
    * Retrieves n blocks from Cache, if not found in Cache retrieves from Database
    */
   async getList(eventids: string[]) {
-    return getListCached<BlockRow>(eventids, {
+    return getListCached<BlockExpanded>(eventids, {
       ctx: this.ctx,
       keyOf: Block.keyOf,
       getOne: (id) => this.get(id),
